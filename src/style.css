@@ -1,0 +1,406 @@
+/* Font Face Definitions */
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('/fonts/HelveticaNowDisplay-Regular.woff.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('/fonts/HelveticaNowDisplay-Medium.woff.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('/fonts/HelveticaNowDisplay-Bold.woff.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ballinger Mono';
+  src: url('/fonts/BallingerMono-Regular.woff.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ballinger Mono';
+  src: url('/fonts/BallingerMono-Light.woff.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-gray-light: #f5f5f5;
+  --color-gray-medium: #666666;
+  --color-gray-dark: #333333;
+  --font-primary: 'Helvetica Now Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Ballinger Mono', 'SF Mono', Consolas, monospace;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  background-color: var(--color-white);
+  color: var(--color-black);
+  line-height: 1.4;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Navigation Styles */
+nav {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 1000;
+}
+
+.styles_NavigationWrapper__VKYXQ {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.styles_NavigationWrapper__VKYXQ div[inert] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: var(--color-black);
+  border-radius: 50px;
+  z-index: -1;
+  transition: all 0.3s ease-out;
+  width: 0;
+  opacity: 1;
+  translate: 0%;
+}
+
+.styles_NavigationWrapper__VKYXQ li {
+  margin: 0;
+  padding: 0;
+}
+
+.styles_NavigationWrapper__VKYXQ li a {
+  display: block;
+  padding: 12px 20px;
+  color: var(--color-black);
+  text-decoration: none;
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.3s ease-out;
+  position: relative;
+  z-index: 1;
+}
+
+.styles_NavigationWrapper__VKYXQ li[inert] a {
+  color: var(--color-white);
+}
+
+.styles_NavigationWrapper__VKYXQ li:not([inert]) a:hover {
+  color: var(--color-gray-medium);
+}
+
+/* Loader Styles */
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-white);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+.loader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader-text {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.loader-progress {
+  width: 200px;
+  height: 1px;
+  background-color: #e5e5e5;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background-color: var(--color-black);
+  transition: width 1.5s ease-in-out;
+}
+
+/* Main Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  min-height: 100vh;
+}
+
+/* Project List */
+.project-list {
+  padding: 80px 0;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 80px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.header h1 {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.project-count {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-gray-medium);
+}
+
+/* Year Sections */
+.year-section {
+  margin-bottom: 80px;
+}
+
+.year-header {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 40px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 20px;
+  background-color: var(--color-white);
+  z-index: 10;
+}
+
+/* Project Items */
+.project-item {
+  margin-bottom: 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+}
+
+.project-item:hover {
+  background-color: #fafafa;
+  margin-left: -40px;
+  margin-right: -40px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.project-content {
+  padding: 40px 0;
+}
+
+.project-title {
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+/* Project Meta */
+.project-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+  background-color: var(--color-gray-light);
+  color: var(--color-gray-medium);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.2s ease-out;
+}
+
+.project-item:hover .tag {
+  background-color: #e8e8e8;
+  color: var(--color-gray-dark);
+}
+
+.project-client {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #999999;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  nav {
+    bottom: 30px;
+    right: 30px;
+  }
+  
+  .container {
+    padding: 0 30px;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .project-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .styles_NavigationWrapper__VKYXQ li a {
+    font-size: 12px;
+    padding: 10px 16px;
+  }
+  
+  .container {
+    padding: 0 20px;
+  }
+  
+  .project-list {
+    padding: 60px 0;
+  }
+  
+  .header {
+    margin-bottom: 60px;
+  }
+  
+  .year-section {
+    margin-bottom: 60px;
+  }
+  
+  .project-item:hover {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+  .year-header {
+    top: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
+  }
+  
+  .project-list {
+    padding: 40px 0;
+  }
+  
+  .header {
+    margin-bottom: 40px;
+  }
+  
+  .year-section {
+    margin-bottom: 40px;
+  }
+  
+  .project-content {
+    padding: 30px 0;
+  }
+  
+  .project-item:hover {
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  .loader-text {
+    font-size: 14px;
+  }
+}
