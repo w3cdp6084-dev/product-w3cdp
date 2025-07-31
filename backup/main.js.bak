@@ -1,0 +1,656 @@
+import './style.css'
+import barba from '@barba/core'
+import barbaPrefetch from '@barba/prefetch'
+import { gsap } from 'gsap'
+import * as THREE from 'three'
+
+class PhotoYoshiApp {
+  constructor() {
+    this.currentCategory = 'all'
+    this.isLoaded = false
+    this.scene = null
+    this.camera = null
+    this.renderer = null
+    this.canvasContainer = null
+    this.photoMeshes = []
+    this.textureLoader = null
+    this.images = {
+      interior: [
+        {
+          id: 1,
+          title: 'Modern Living Room',
+          category: 'interior',
+          src: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop',
+          alt: 'Modern living room with minimalist design'
+        },
+        {
+          id: 2,
+          title: 'Scandinavian Kitchen',
+          category: 'interior',
+          src: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop',
+          alt: 'Clean Scandinavian kitchen design'
+        },
+        {
+          id: 3,
+          title: 'Contemporary Bedroom',
+          category: 'interior',
+          src: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&h=600&fit=crop',
+          alt: 'Contemporary bedroom with natural lighting'
+        },
+        {
+          id: 4,
+          title: 'Industrial Loft',
+          category: 'interior',
+          src: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&h=600&fit=crop',
+          alt: 'Industrial style loft space'
+        }
+      ],
+      portrait: [
+        {
+          id: 5,
+          title: 'Studio Portrait',
+          category: 'portrait',
+          src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop',
+          alt: 'Professional studio portrait'
+        },
+        {
+          id: 6,
+          title: 'Natural Light Portrait',
+          category: 'portrait',
+          src: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=800&h=600&fit=crop',
+          alt: 'Natural light portrait photography'
+        },
+        {
+          id: 7,
+          title: 'Environmental Portrait',
+          category: 'portrait',
+          src: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&h=600&fit=crop',
+          alt: 'Environmental portrait in urban setting'
+        },
+        {
+          id: 8,
+          title: 'Creative Portrait',
+          category: 'portrait',
+          src: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&h=600&fit=crop',
+          alt: 'Creative portrait with artistic lighting'
+        }
+      ],
+      landscape: [
+        {
+          id: 9,
+          title: 'Mountain Vista',
+          category: 'landscape',
+          src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
+          alt: 'Mountain landscape with dramatic sky'
+        },
+        {
+          id: 10,
+          title: 'Coastal Seascape',
+          category: 'landscape',
+          src: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=600&fit=crop',
+          alt: 'Coastal seascape at golden hour'
+        },
+        {
+          id: 11,
+          title: 'Forest Path',
+          category: 'landscape',
+          src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop',
+          alt: 'Mysterious forest path'
+        },
+        {
+          id: 12,
+          title: 'Urban Sunset',
+          category: 'landscape',
+          src: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop',
+          alt: 'Urban cityscape at sunset'
+        }
+      ]
+    }
+    
+    this.init()
+  }
+
+  init() {
+    this.setupViewportHeight()
+    this.initBarba()
+    this.initTextSplitter()
+    this.initSplashScreen()
+    this.setupModal()
+    this.setupModeToggle()
+    this.initWebGL()
+    this.loadImages('all')
+  }
+
+  // Setup viewport height variable for mobile
+  setupViewportHeight() {
+    const setVH = () => {
+      const vh = window.innerHeight * 0.01
+      document.documentElement.style.setProperty('--vh', `${vh}px`)
+    }
+    
+    setVH()
+    window.addEventListener('resize', setVH)
+  }
+
+  // Initialize Barba.js for page transitions
+  initBarba() {
+    barba.use(barbaPrefetch)
+    
+    barba.init({
+      transitions: [{
+        name: 'default',
+        sync: true,
+        leave(data) {
+          return this.fadeOut(data.current.container)
+        },
+        enter(data) {
+          return this.fadeIn(data.next.container)
+        }
+      }]
+    })
+  }
+
+  fadeOut(container) {
+    return gsap.to(container, {
+      opacity: 0,
+      duration: 0.5,
+      ease: "power2.inOut"
+    })
+  }
+
+  fadeIn(container) {
+    gsap.set(container, { opacity: 0 })
+    return gsap.to(container, {
+      opacity: 1,
+      duration: 0.5,
+      ease: "power2.inOut"
+    })
+  }
+
+  // Text splitting animation system
+  initTextSplitter() {
+    const textElements = document.querySelectorAll('.js-split')
+    
+    textElements.forEach(element => {
+      if (!element.classList.contains('is-splited')) {
+        this.splitText(element)
+      }
+    })
+
+    // Animate text on load
+    setTimeout(() => {
+      this.animateTextElements()
+    }, 800)
+  }
+
+  splitText(element) {
+    const text = element.textContent
+    const words = text.split(' ')
+    
+    element.innerHTML = ''
+    element.classList.add('is-splited')
+    
+    words.forEach((word, index) => {
+      const wordSpan = document.createElement('span')
+      wordSpan.className = 'js-split-w'
+      wordSpan.textContent = word
+      
+      if (index < words.length - 1) {
+        wordSpan.textContent += ' '
+      }
+      
+      element.appendChild(wordSpan)
+    })
+  }
+
+  animateTextElements() {
+    const textElements = document.querySelectorAll('.js-split.is-splited')
+    
+    textElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.setAttribute('data-shown', '1')
+      }, index * 200)
+    })
+  }
+
+  // Splash screen animation - Photoyoshi Style
+  initSplashScreen() {
+    const splash = document.querySelector('.l-splash')
+    const frontWrap = splash.querySelector('.l-splash__front-wrap')
+    const front = splash.querySelector('.l-splash__front')
+    const title = splash.querySelector('.l-splash__title')
+    const bottom = splash.querySelector('.l-splash__bottom')
+    
+    // Set initial states
+    gsap.set(front, { opacity: 0 })
+    gsap.set(title, { opacity: 0 })
+    gsap.set(bottom, { opacity: 0 })
+    
+    // Animate splash screen sequence
+    const tl = gsap.timeline()
+    
+    tl.to(front, {
+      opacity: 1,
+      duration: 0.8,
+      ease: "power2.out"
+    })
+    .to(title, {
+      opacity: 1,
+      duration: 0.6,
+      ease: "power2.out"
+    }, "-=0.3")
+    .to(bottom, {
+      opacity: 1,
+      duration: 0.6,
+      ease: "power2.out"
+    }, "-=0.2")
+    .to(frontWrap, {
+      clipPath: "inset(0vw)",
+      duration: 1.5,
+      ease: "cubic-bezier(.32,.94,.6,1)"
+    }, "+=0.5")
+    .to(splash, {
+      opacity: 0,
+      duration: 0.8,
+      ease: "power2.inOut",
+      onComplete: () => {
+        splash.style.display = 'none'
+        this.isLoaded = true
+        this.animatePageElements()
+        document.documentElement.classList.remove('is-load__before')
+        document.documentElement.classList.add('is-load__after')
+      }
+    }, "+=0.5")
+  }
+
+  // Animate page elements after splash
+  animatePageElements() {
+    // Animate fixed elements
+    const fixedElements = document.querySelectorAll('.to')
+    
+    gsap.fromTo(fixedElements, 
+      { opacity: 0, y: 20 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        ease: "cubic-bezier(.32,.94,.6,1)",
+        stagger: 0.1,
+        delay: 0.2
+      }
+    )
+
+    // Animate text elements
+    this.animateTextElements()
+  }
+
+  animateImageGrid() {
+    const imageItems = document.querySelectorAll('.image-item')
+    
+    imageItems.forEach((item, index) => {
+      setTimeout(() => {
+        item.classList.add('is-visible')
+      }, index * 100)
+    })
+  }
+
+  // Navigation handling
+  setupNavigation() {
+    const categoryItems = document.querySelectorAll('.p-home__category--item')
+    
+    categoryItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault()
+        
+        // Remove active class from all items
+        categoryItems.forEach(navItem => navItem.classList.remove('active'))
+        
+        // Add active class to clicked item
+        item.classList.add('active')
+        
+        // Get category and load images with animation
+        const category = item.getAttribute('data-category')
+        this.currentCategory = category
+        this.loadImagesWithAnimation(category)
+        this.updateWebGLCategory(category)
+      })
+    })
+  }
+
+  // Image loading with smooth transitions
+  loadImagesWithAnimation(category) {
+    const imageGrid = document.getElementById('imageGrid')
+    
+    // Fade out current images
+    gsap.to('.image-item', {
+      opacity: 0,
+      y: 30,
+      duration: 0.3,
+      stagger: 0.05,
+      ease: "power2.inOut",
+      onComplete: () => {
+        this.renderImages(category)
+      }
+    })
+  }
+
+  loadImages(category) {
+    this.renderImages(category)
+  }
+
+  renderImages(category) {
+    const imageGrid = document.getElementById('imageGrid')
+    
+    let imagesToShow = []
+    
+    if (category === 'all') {
+      imagesToShow = [
+        ...this.images.interior,
+        ...this.images.portrait,
+        ...this.images.landscape
+      ]
+    } else {
+      imagesToShow = this.images[category] || []
+    }
+    
+    if (imagesToShow.length === 0) {
+      imageGrid.innerHTML = '<div class="loading">No images found in this category.</div>'
+      return
+    }
+    
+    const imageElements = imagesToShow.map((image, index) => {
+      return `
+        <div class="image-item" data-image-id="${image.id}">
+          <img src="${image.src}" alt="${image.alt}" class="js-img" loading="lazy">
+          <div class="image-overlay">
+            <div class="image-title js-split">${image.title}</div>
+            <div class="image-category js-split">${image.category}</div>
+          </div>
+        </div>
+      `
+    }).join('')
+    
+    imageGrid.innerHTML = imageElements
+    
+    // Initialize new text splits
+    this.initTextSplitter()
+    
+    // Setup image loading
+    this.setupImageLoading()
+    
+    // Setup click handlers
+    this.setupImageClickHandlers()
+    
+    // Animate new images
+    if (this.isLoaded) {
+      this.animateImageGrid()
+    }
+  }
+
+  setupImageLoading() {
+    const images = document.querySelectorAll('.js-img')
+    
+    images.forEach(img => {
+      img.addEventListener('load', () => {
+        img.classList.add('is-loaded')
+      })
+      
+      // If image is already loaded
+      if (img.complete) {
+        img.classList.add('is-loaded')
+      }
+    })
+  }
+
+  setupImageClickHandlers() {
+    const imageItems = document.querySelectorAll('.image-item')
+    
+    imageItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const imageId = parseInt(item.getAttribute('data-image-id'))
+        this.openModal(imageId)
+      })
+    })
+  }
+
+  // Modal functionality
+  setupModal() {
+    const modal = document.getElementById('imageModal')
+    const modalBackdrop = modal.querySelector('.modal-backdrop')
+    const modalClose = modal.querySelector('.modal-close')
+    
+    modalBackdrop.addEventListener('click', () => this.closeModal())
+    modalClose.addEventListener('click', () => this.closeModal())
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        this.closeModal()
+      }
+    })
+  }
+
+  openModal(imageId) {
+    let imageData = null
+    
+    Object.values(this.images).forEach(categoryImages => {
+      const found = categoryImages.find(img => img.id === imageId)
+      if (found) imageData = found
+    })
+    
+    if (!imageData) return
+    
+    const modal = document.getElementById('imageModal')
+    const modalImage = modal.querySelector('.modal-image')
+    const modalTitle = modal.querySelector('.modal-title')
+    const modalCategory = modal.querySelector('.modal-category')
+    
+    // Set modal content
+    modalImage.src = imageData.src.replace('w=800&h=600', 'w=1200&h=900')
+    modalImage.alt = imageData.alt
+    modalTitle.textContent = imageData.title
+    modalCategory.textContent = imageData.category
+    
+    // Animate modal opening
+    modal.classList.add('active')
+    document.body.style.overflow = 'hidden'
+    
+    gsap.fromTo(modal.querySelector('.modal-content'),
+      { scale: 0.8, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.4, ease: "power2.out" }
+    )
+  }
+
+  closeModal() {
+    const modal = document.getElementById('imageModal')
+    
+    gsap.to(modal.querySelector('.modal-content'),
+      { 
+        scale: 0.8, 
+        opacity: 0, 
+        duration: 0.3, 
+        ease: "power2.in",
+        onComplete: () => {
+          modal.classList.remove('active')
+          document.body.style.overflow = ''
+        }
+      }
+    )
+  }
+
+  // Mode toggle functionality
+  setupModeToggle() {
+    const gridBtn = document.querySelector('.js-modeGrid')
+    const fullBtn = document.querySelector('.js-modeFull')
+    
+    if (!gridBtn || !fullBtn) return
+
+    gridBtn.addEventListener('click', () => {
+      document.documentElement.setAttribute('data-mode', 'grid')
+      gridBtn.classList.add('active')
+      fullBtn.classList.remove('active')
+    })
+
+    fullBtn.addEventListener('click', () => {
+      document.documentElement.setAttribute('data-mode', 'full')
+      fullBtn.classList.add('active')
+      gridBtn.classList.remove('active')
+    })
+  }
+
+  // WebGL Initialization
+  initWebGL() {
+    this.canvasContainer = document.querySelector('.js-canvas__wrap')
+    
+    if (!this.canvasContainer) return
+
+    // Scene setup
+    this.scene = new THREE.Scene()
+    
+    // Camera setup
+    this.camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    )
+    this.camera.position.z = 5
+
+    // Renderer setup
+    this.renderer = new THREE.WebGLRenderer({ 
+      antialias: true, 
+      alpha: true 
+    })
+    this.renderer.setSize(window.innerWidth, window.innerHeight)
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    
+    // Add canvas to container
+    this.canvasContainer.appendChild(this.renderer.domElement)
+
+    // Add basic lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6)
+    this.scene.add(ambientLight)
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
+    directionalLight.position.set(10, 10, 5)
+    this.scene.add(directionalLight)
+
+    // Initialize texture loader
+    this.textureLoader = new THREE.TextureLoader()
+
+    // Handle resize
+    window.addEventListener('resize', () => this.onWindowResize())
+
+    // Start render loop
+    this.animate()
+
+    // Load initial photo meshes
+    this.createPhotoMeshes()
+  }
+
+  onWindowResize() {
+    if (!this.camera || !this.renderer) return
+
+    this.camera.aspect = window.innerWidth / window.innerHeight
+    this.camera.updateProjectionMatrix()
+    this.renderer.setSize(window.innerWidth, window.innerHeight)
+  }
+
+  animate() {
+    requestAnimationFrame(() => this.animate())
+    
+    // Animate photo meshes
+    this.photoMeshes.forEach((mesh, index) => {
+      if (mesh) {
+        mesh.rotation.y += 0.001
+        mesh.position.y = Math.sin(Date.now() * 0.001 + index) * 0.1
+      }
+    })
+    
+    if (this.renderer && this.scene && this.camera) {
+      this.renderer.render(this.scene, this.camera)
+    }
+  }
+
+  // Create 3D photo meshes
+  createPhotoMeshes() {
+    if (!this.scene || !this.textureLoader) return
+
+    // Clear existing meshes
+    this.photoMeshes.forEach(mesh => {
+      this.scene.remove(mesh)
+    })
+    this.photoMeshes = []
+
+    // Get current images to display
+    let imagesToShow = []
+    if (this.currentCategory === 'all') {
+      imagesToShow = [
+        ...this.images.interior.slice(0, 2),
+        ...this.images.portrait.slice(0, 2),
+        ...this.images.landscape.slice(0, 2)
+      ]
+    } else {
+      imagesToShow = this.images[this.currentCategory]?.slice(0, 6) || []
+    }
+
+    // Create meshes for each image
+    imagesToShow.forEach((image, index) => {
+      // Create plane geometry
+      const geometry = new THREE.PlaneGeometry(1.5, 1.0)
+      
+      // Load texture
+      this.textureLoader.load(
+        image.src,
+        (texture) => {
+          // Create material with texture
+          const material = new THREE.MeshLambertMaterial({
+            map: texture,
+            transparent: true,
+            opacity: 0.8
+          })
+          
+          // Create mesh
+          const mesh = new THREE.Mesh(geometry, material)
+          
+          // Position mesh in a circle
+          const angle = (index / imagesToShow.length) * Math.PI * 2
+          const radius = 3
+          mesh.position.x = Math.cos(angle) * radius
+          mesh.position.z = Math.sin(angle) * radius
+          mesh.position.y = (Math.random() - 0.5) * 2
+          
+          // Random rotation
+          mesh.rotation.x = (Math.random() - 0.5) * 0.5
+          mesh.rotation.y = (Math.random() - 0.5) * 0.5
+          
+          // Add to scene and array
+          this.scene.add(mesh)
+          this.photoMeshes.push(mesh)
+        },
+        undefined,
+        (error) => {
+          console.error('Error loading texture:', error)
+        }
+      )
+    })
+  }
+
+  // Update 3D scene when category changes
+  updateWebGLCategory(category) {
+    this.currentCategory = category
+    this.createPhotoMeshes()
+  }
+}
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', () => {
+  const app = new PhotoYoshiApp()
+  
+  // Setup navigation after DOM is ready
+  setTimeout(() => {
+    app.setupNavigation()
+  }, 100)
+})
+
+// Export for debugging
+window.PhotoYoshiApp = PhotoYoshiApp

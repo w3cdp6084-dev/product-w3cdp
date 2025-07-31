@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js is-load__before" data-mode="grid">
+<head>
+  <script>document.documentElement.classList.replace('no-js', 'is-js');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhotoYoshi — Photography Portfolio</title>
+  <meta name="description" content="Takamitsu Motoyoshi Tokyo based photographer Interior/Architecture/Stilllife/Portrait/Landscape">
+  <link rel="icon" href="/vite.svg" type="image/svg+xml">
+</head>
+<body class="page" data-xhr="wrapper">
+  <!-- Header -->
+  <header class="l-header">
+    <div class="l-header__inner">
+      <h1>
+        <a class="js-link" data-to="home" href="index.html" aria-label="photoyoshi">
+          <svg width="110" height="18" viewBox="0 0 110 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.0618016 17.7958H5.18545L15.2797 0.861572H0V4.48061L8.05039 4.49638L0.0618016 17.7958Z" fill="#252726"></path>
+            <path d="M11.5336 17.7958L21.6425 0.861572H16.5792L6.40845 17.7958H11.5336Z" fill="#252726"></path>
+            <path d="M62.8152 0.844604V4.46364C66.0142 4.46364 69.9106 4.46938 74.503 4.47941L72.8315 7.23848H62.877V10.8876H70.6478L68.6966 14.1297H62.8152V17.7788H71.6396L81.7323 0.844604H62.8152Z" fill="#252726"></path>
+            <path d="M46.6437 0.844604H41.4009V17.7989H46.6437V0.844604Z" fill="#252726"></path>
+            <path d="M72.8467 17.7788H77.9865L88.0793 0.844604H83.0336L72.8467 17.7788Z" fill="#252726"></path>
+            <path d="M104.132 0.844604L93.9617 17.7788H99.0868L109.196 0.844604H104.132Z" fill="#252726"></path>
+            <path d="M52.948 6.76016V0.879395H47.9023V17.7979H52.948V10.4394H60.9675V6.76016H52.948Z" fill="#252726"></path>
+            <path d="M94.7673 17.7788H99.891L110 0.844604H104.938L94.7673 17.7788Z" fill="#252726"></path>
+            <path d="M92.7697 7.04271C93.5436 7.04271 94.2293 6.79619 94.8282 6.30314C95.5713 5.67966 95.9421 4.89566 95.9421 3.95112C95.9421 3.19722 95.689 2.5293 95.1829 1.94596C94.5428 1.22215 93.7379 0.860962 92.7682 0.860962C91.9942 0.860962 91.307 1.10749 90.7096 1.60054C89.9665 2.22401 89.5957 3.00802 89.5957 3.95255C89.5957 4.70646 89.8488 5.37581 90.355 5.95772C90.9951 6.68153 91.8 7.04271 92.7697 7.04271Z" fill="#252726"></path>
+            <path d="M30.2871 17.7976H34.0791V17.7933H35.3401V9.23234H37.6606V5.5832H35.3401V3.33582H33.9952V3.33725H30.2709V5.5832H21.1537V9.23234H26.2464L21.1228 17.7976H26.2464L30.2871 10.9967V17.7976Z" fill="#252726"></path>
+            <path d="M95.9612 11.0543C95.9612 10.3004 95.7081 9.63245 95.2019 9.04911C94.5618 8.3253 93.7569 7.96411 92.7872 7.96411C92.0132 7.96411 91.3261 8.21063 90.7286 8.70368C89.9856 9.32716 89.6147 10.1112 89.6147 11.0557C89.6147 11.8096 89.8678 12.479 90.374 13.0609C91.0141 13.7847 91.819 14.1459 92.7887 14.1459C93.5627 14.1459 94.2484 13.8993 94.8473 13.4063C95.5904 12.7828 95.9612 11.9988 95.9612 11.0543Z" fill="#252726"></path>
+          </svg>
+        </a>
+      </h1>
+      <nav>
+        <a class="c-link__text fs-s js-link --a" data-to="home" href="index.html">
+          <span class="o"><span class="t n">Work</span></span>
+        </a>
+        <span class="fs-s"><span class="o"><span class="t n">,&nbsp;</span></span></span>
+        <a class="c-link__text fs-s js-link --a" data-to="about" href="about.html">
+          <span class="o"><span class="t n">About</span></span>
+        </a>
+        <a class="c-link__text fs-s js-link --c" data-to="home" href="index.html">
+          <span class="o"><span class="t c">Close</span></span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Barba Container -->
+  <div class="xhr-wrap" data-xhr="container" data-xhr-namespace="home">
+    <div class="js-wrapper p-home">
+      <div class="js-page__cover"></div>
+      <div class="js-page">
+        <div class="js-body">
+          <div class="c-content js-gl__wrap">
+            <!-- WebGL content will be generated here -->
+            <!-- Image Grid Container -->
+            <div id="imageGrid" class="image-grid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fixed UI Elements -->
+      <div class="p-home__fixed to">
+        <!-- Grid Scope Indicator -->
+        <div class="p-home__scope c-scope --grid">
+          <span class="l l1"></span>
+          <span class="l l2"></span>
+          <span class="l l3"></span>
+          <span class="l l4"></span>
+        </div>
+        <div class="p-home__scope c-scope --full">
+          <span class="l l1"></span>
+          <span class="l l2"></span>
+          <span class="l l3"></span>
+          <span class="l l4"></span>
+        </div>
+
+        <!-- Category Navigation -->
+        <div class="p-home__category to">
+          <div class="p-home__category--title">
+            <a class="p-home__category--item active" data-category="interior" href="interior.html">
+              <h2 class="fs-xl">Interior</h2>
+              <p class="--n fs-s">( 15 )</p>
+            </a>
+            <a class="p-home__category--item" data-category="portrait" href="portrait.html">
+              <h2 class="fs-xl">Portrait</h2>
+              <p class="--n fs-s">( 17 )</p>
+            </a>
+            <a class="p-home__category--item" data-category="landscape" href="landscape.html">
+              <h2 class="fs-xl">Landscape</h2>
+              <p class="--n fs-s">( 14 )</p>
+            </a>
+          </div>
+          <p class="p-home__category--all fs-s">
+            <span class="o">
+              <span class="t">/46Photos</span>
+            </span>
+          </p>
+        </div>
+
+        <!-- Mode Toggle -->
+        <div class="p-home__mode to">
+          <button class="js-modeGrid c-btn c-btn__grid active" aria-label="GridMode">
+            <div class="c-btn__grid--inner">
+              <span class="c-btn__grid l"><span></span><span></span><span></span></span>
+              <span class="c-btn__grid l"><span></span><span></span><span></span></span>
+              <span class="c-btn__grid l"><span></span><span></span><span></span></span>
+              <span class="c-btn__grid l"><span></span><span></span><span></span></span>
+            </div>
+          </button>
+          <button class="js-modeFull c-btn c-btn__full" aria-label="FullMode">
+            <div class="c-btn__full--inner">
+              <span class="c-btn__full l l1"><span></span></span>
+              <span class="c-btn__full l l2"><span></span></span>
+              <span class="c-btn__full l l3"><span></span></span>
+              <span class="c-btn__full l l4"><span></span></span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- WebGL Canvas -->
+      <div class="js-canvas__wrap"></div>
+    </div>
+
+    <!-- Custom Scrollbar -->
+    <div class="c-scrollbar">
+      <div class="c-thumb">
+        <div class="c-pivot"></div>
+        <div class="c-pivot"></div>
+      </div>
+    </div>
+
+    <!-- Splash Screen -->
+    <div class="l-splash">
+      <div class="l-splash__front">
+        <div class="l-splash__front-wrap">
+          <div class="l-splash__front-inner">
+            <div class="l-splash__front--image">
+              <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop" alt="">
+            </div>
+          </div>
+        </div>
+        <div class="l-splash__front-bg"></div>
+      </div>
+      <div class="l-splash__back">
+        <div class="l-splash__title">
+          <h1 class="fs-xxl u-upper">
+            <div class="in">
+              <span>P</span><span>h</span><span>o</span><span>t</span><span>o</span><span>y</span><span>o</span><span>s</span><span>h</span><span>i</span>
+            </div>
+            <div class="out">
+              <span>P</span><span>h</span><span>o</span><span>t</span><span>o</span><span>y</span><span>o</span><span>s</span><span>h</span><span>i</span>
+            </div>
+          </h1>
+        </div>
+        <div class="l-splash__middle">
+          <div class="l-home__scope c-scope --grid">
+            <span class="l l1"></span>
+            <span class="l l2"></span>
+            <span class="l l3"></span>
+            <span class="l l4"></span>
+          </div>
+          <div class="l-home__scope c-scope --grid">
+            <span class="l l1"></span>
+            <span class="l l2"></span>
+            <span class="l l3"></span>
+            <span class="l l4"></span>
+          </div>
+        </div>
+        <div class="l-splash__bottom">
+          <div class="l-splash__tag">
+            <img src="https://via.placeholder.com/60x20/252726/FFFFFF?text=TAG" alt="">
+          </div>
+          <p class="l-splash__text fs-s">
+            Takamitsu Motoyoshi is a photographer based in Japan. "Photoyoshi" is a word that combines "photo" and "Motoyoshi."
+          </p>
+          <p class="l-splash__loader fs-l">
+            <span class="l-splash__num">0</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Modal -->
+  <div id="imageModal" class="modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close modal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="modal-image-container">
+        <img class="modal-image" src="" alt="">
+      </div>
+      <div class="modal-info">
+        <h3 class="modal-title"></h3>
+        <p class="modal-category"></p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
